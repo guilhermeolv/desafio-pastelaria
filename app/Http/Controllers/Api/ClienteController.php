@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
@@ -30,11 +30,11 @@ class ClienteController extends Controller
     public function index()
     {
         $query = $this->cliente->query();
-        $clientes = $query->paginate(5);
-        $clientesListResource = new ClienteCollection($clientes);
+        $cliente = $query->paginate(5);
+        $clienteListResource = new ClienteCollection($cliente);
 
         return response()->json(
-            $clientesListResource
+            $clienteListResource
         );
     }
 
@@ -51,27 +51,27 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $clientes): JsonResponse
+    public function show(int $cliente): JsonResponse
     {
         return response()->json(
-            $this->clienteCollection->make($this->cliente->query()->findOrFail($clientes))
+            $this->clienteCollection->make($this->cliente->query()->findOrFail($cliente))
         );
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $clientes
+     * @param  int  $cliente
      * @param  UpdateClienteRequest  $request
      * @return JsonResponse
      */
-    public function update(int $clientes, UpdateClienteRequest $request): JsonResponse
+    public function update(int $cliente, UpdateClienteRequest $request): JsonResponse
     {
-        $this->cliente->query()->find($clientes)->update($request->all());
+        $this->cliente->query()->find($cliente)->update($request->all());
 
         return response()->json(
             ClienteResource::make(
-                $this->cliente->query()->findOrFail($clientes)
+                $this->cliente->query()->findOrFail($cliente)
             ),
             201
         );
@@ -80,12 +80,12 @@ class ClienteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $clientes
+     * @param  int  $cliente
      * @return Response
      */
-    public function destroy(int $clientes)
+    public function destroy(int $cliente)
     {
-        $this->cliente->delete($clientes);
+        $this->cliente->delete($cliente);
         return;
     }
 }
