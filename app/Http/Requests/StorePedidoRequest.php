@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Entities\Pedido;
+use App\Models\Pedido;
 
 class StorePedidoRequest extends FormRequest
 {
