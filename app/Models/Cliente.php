@@ -22,17 +22,18 @@ class Cliente extends Model
     ];
 
     public static $rules = [
-        'nome' => 'required|string|max:255',
-        'email' => 'required|email|unique:clientes',
-        'telefone' => 'required|string|max:20',
-        'data_de_nascimento' => 'required|date',
-        'endereco' => 'required|string|max:255',
-        'complemento' => 'nullable|string|max:255',
-        'bairro' => 'required|string|max:255',
-        'cep' => 'required|string|max:10',
-        'data_de_cadastro' => 'required|date'
+        'nome'              => 'required|string|max:255',
+        'email'             => 'required|email|unique:clientes',
+        'telefone'          => 'required|string|max:20',
+        'data_nascimento'   => 'required|date',
+        'endereco'          => 'required|string|max:255',
+        'complemento'       => 'nullable|string|max:255',
+        'bairro'            => 'required|string|max:255',
+        'cep'               => 'required|string|max:10',
+        'data_cadastro'     => 'required|date'
     ];
-
+    
+    
     public function pedidos()
     {
         return $this->hasMany(Pedido::class, 'codigo_cliente', 'id');

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Database\Factories\ProdutoFactory;
 
 class Produto extends Model
 {
     use HasFactory;
+    protected $factory = ProdutoFactory::class;
 
     protected $fillable = [
         'nome',
@@ -16,9 +18,9 @@ class Produto extends Model
     ];
 
     public static $rules = [
-        'nome' => 'required|string|max:255',
+        'nome'  => 'required|string|max:255',
         'preco' => 'required|numeric|decimal:2',
-        'foto' => 'required|file|mimes:jpg,bmp,png|max:1024',
+        'foto'  => 'required|file|mimes:jpg,bmp,png|max:1024',
     ];
 
     public function pedidos()
