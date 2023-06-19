@@ -17,15 +17,15 @@ class ClienteFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'telefone' => $this->faker->phoneNumber,
-            'data_nascimento' => $this->faker->date('Y-m-d'),
-            'endereco' => $this->faker->address,
-            'complemento' => $this->faker->optional()->secondaryAddress,
-            'bairro' => $this->faker->citySuffix,
-            'cep' => $this->faker->postcode,
-            'data_cadastro' => $this->faker->date('Y-m-d H:i:s'),
+            'nome'              => $this->faker->name,
+            'email'             => $this->faker->unique()->safeEmail,
+            'telefone'          => $this->faker->phoneNumber,
+            'data_nascimento'   => $this->faker->date('Y-m-d'),
+            'endereco'          => $this->faker->address,
+            'complemento'       => $this->faker->optional()->secondaryAddress,
+            'bairro'            => $this->faker->citySuffix,
+            'cep'               => $this->faker->postcode,
+            'data_cadastro'     => $this->faker->date('Y-m-d H:i:s'),
         ];
     }
 }
