@@ -16,14 +16,6 @@ class PedidoController extends Controller
     protected $pedido;
     protected $pedidoCollection;
 
-    public function __construct(
-        PedidoCollection $pedidoCollection,
-        Pedido $pedido
-    ) {
-        $this->pedidoCollection = $pedidoCollection;
-        $this->pedido = $pedido;
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -82,7 +74,6 @@ class PedidoController extends Controller
      */
     public function destroy(int $pedido)
     {
-        $this->pedido->delete($pedido);
-        return;
+        return response()->json(Pedido::destroy($pedido), 202);
     }
 }

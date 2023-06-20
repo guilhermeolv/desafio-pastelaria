@@ -12,23 +12,13 @@ use Illuminate\Http\JsonResponse;
 
 class ProdutoController extends Controller
 {
-    protected $produto;
-    protected $produtoCollection;
-
-    public function __construct(
-        ProdutoCollection $produtoCollection,
-        Produto $produto
-    ) {
-        $this->produtoCollection = $produtoCollection;
-        $this->produto = $produto;
-    }
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $query = $this->produto->query();
+        $query = Produto::query();
         $produto = $query->paginate(5);
         $produtoListResource = new produtoCollection($produto);
 
@@ -43,8 +33,7 @@ class ProdutoController extends Controller
     public function store(StoreProdutoRequest $request): JsonResponse
     {
         return response()->json(
-            $this->produtoCollection->make($this->produto->create($request->all())),
-            201);
+            ProdutoResource::make(Produto::create($request->all())),201);
     }
 
     /**
@@ -53,7 +42,7 @@ class ProdutoController extends Controller
     public function show(int $produto): JsonResponse
     {
         return response()->json(
-            $this->produtoCollection->make($this->produto->query()->findOrFail($produto))
+            ProdutoResource::make(Produto::query()->findOrFail($produto))
         );
     }
 
@@ -66,11 +55,11 @@ class ProdutoController extends Controller
      */
     public function update(int $produto, UpdateProdutoRequest $request): JsonResponse
     {
-        $this->produto->query()->find($produto)->update($request->all());
+        Produto::query()->find($produto)->update($request->all());
 
         return response()->json(
             ProdutoResource::make(
-                $this->produto->query()->findOrFail($produto)
+                Produto::query()->findOrFail($produto)
             ),
             201
         );
@@ -81,7 +70,6 @@ class ProdutoController extends Controller
      */
     public function destroy(int $produto)
     {
-        $this->produto->delete($produto);
-        return;
+        return response()->json(Produto::destroy($produto), 202);
     }
 }
