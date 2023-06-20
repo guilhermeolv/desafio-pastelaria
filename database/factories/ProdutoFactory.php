@@ -20,8 +20,8 @@ class ProdutoFactory extends Factory
     public function definition(): array
     {
         return [
-            'nome'  => $this->faker->name,
-            'preco' => $this->faker->numberBetween($min = 4, $max = 15),
+            'nome'  => $this->faker->unique(false,5)->pastelName(),
+            'preco' => $this->faker->randomFloat(2, 4, 15),
             'foto'  => $this->faker->imageUrl($width = 200, $height = 200)
         ];
     }
