@@ -9,6 +9,7 @@ use App\Http\Resources\PedidoCollection;
 use App\Http\Resources\PedidoResource;
 use App\Models\Pedido;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 
 class PedidoController extends Controller
 {
@@ -35,9 +36,24 @@ class PedidoController extends Controller
      */
     public function store(StorePedidoRequest $request): JsonResponse
     {
-        return response()->json(
-            $this->pedidoCollection->make($this->pedido->create($request->all())),
-            201);
+        $pedido = new Pedido();
+        $pedido->codigo_cliente = $request->codigo_cliente;
+        $pedido->codigo_produto = $request->codigo_produto;
+        $pedido->data_criacao = $request->data_criacao;
+        $pedido->save();
+
+        $reponse = PedidoResource::make(Pedido::create($request->all()));
+
+        if ($reponse == 201) {
+            Mail::send('Html.view', $pedido, function ($message) {
+                $message->from('john@johndoe.com', 'John Doe');
+                $message->sender('john@johndoe.com', 'John Doe');
+                $message->subject('Subject');
+                $message->priority(3);
+                $message->attach('pathToFile');
+            });
+        }
+        return response()->json();
     }
 
     /**
@@ -46,7 +62,7 @@ class PedidoController extends Controller
     public function show(int $pedido): JsonResponse
     {
         return response()->json(
-            $this->pedidoCollection->make($this->pedido->query()->findOrFail($pedido))
+            PedidoCollection::make($this->pedido->query()->findOrFail($pedido))
         );
     }
 
