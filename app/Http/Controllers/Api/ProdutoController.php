@@ -9,6 +9,7 @@ use App\Http\Resources\ProdutoCollection;
 use App\Http\Resources\ProdutoResource;
 use App\Models\Produto;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class ProdutoController extends Controller
 {
@@ -32,8 +33,14 @@ class ProdutoController extends Controller
      */
     public function store(StoreProdutoRequest $request): JsonResponse
     {
+        $data = $request->all();
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('public/produtos');
+            $data['foto'] = $path;
+        }
+        
         return response()->json(
-            ProdutoResource::make(Produto::create($request->all())),201);
+            ProdutoResource::make(Produto::create($request->all())), 201);
     }
 
     /**
@@ -55,14 +62,20 @@ class ProdutoController extends Controller
      */
     public function update(int $produto, UpdateProdutoRequest $request): JsonResponse
     {
-        Produto::query()->find($produto)->update($request->all());
+        $data = $request->all();
+        $produto = Produto::query()->find($produto);
 
-        return response()->json(
-            ProdutoResource::make(
-                Produto::query()->findOrFail($produto)
-            ),
-            201
-        );
+        if (isset($produto->foto)) {
+            Storage::delete($produto->foto);
+        }
+
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('public/produtos');
+            $data['foto'] = $path;
+        }
+        $produto->update($data);
+
+        return response()->json('ok', 201);
     }
 
     /**
@@ -70,6 +83,10 @@ class ProdutoController extends Controller
      */
     public function destroy(int $produto)
     {
-        return response()->json(Produto::destroy($produto), 202);
+        $produto = Produto::query()->find($produto);
+        if (isset($produto->foto)) {
+            Storage::delete($produto->foto);
+        }
+        return response()->json($produto->delete(), 202);
     }
 }
