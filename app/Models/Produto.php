@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Database\Factories\ProdutoFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Produto extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $factory = ProdutoFactory::class;
 
     protected $fillable = [
